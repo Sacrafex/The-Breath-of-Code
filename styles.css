@@ -1,0 +1,132 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #181c24;
+  color: #e0eafc;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+.main {
+  display: flex;
+  max-width: 1200px;
+  margin: 40px auto;
+  background: #23283a;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  padding: 32px;
+}
+.world-container {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#world {
+  border: 2px solid #2b6cb0;
+  border-radius: 8px;
+  background: #23283a;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px #000a;
+}
+.panel {
+  flex: 1;
+  margin-left: 32px;
+  background: #f7fafc;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 20px;
+  min-width: 260px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+.panel-entity {
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  padding: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.panel-entity button {
+  background: #2b6cb0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.panel-entity button:hover {
+  background: #224e7c;
+}
+.tools-panel {
+  flex: 0 0 90px;
+  margin-left: 32px;
+  background: #23283a;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  padding: 20px 10px;
+  min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.tools-panel h3 {
+  margin-top: 0;
+}
+.tools-panel label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.tools-panel input[type=range] {
+  width: 100%;
+}
+#bot-tools button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  background: #2b6cb0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#bot-tools button:hover {
+  background: #224e7c;
+}
+.tool-group {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.tool-btn {
+  width: 56px;
+  height: 56px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #0004;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.tool-btn.active, .tool-btn:hover {
+  background: #1e40af;
+  box-shadow: 0 4px 16px #0006;
+}
+.tool-icon {
+  pointer-events: none;
+}

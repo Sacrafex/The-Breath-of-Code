@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Breath of Code - God Simulator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="main">
+    <div class="world-container">
+      <canvas id="world" width="800" height="800" tabindex="0" style="outline:none;display:block;margin:0 auto;"></canvas>
+    </div>
+    <div class="tools-panel" id="tools-panel">
+      <div class="tool-group">
+        <button class="tool-btn" id="tool-pan" title="Pan" data-tool="pan"><span class="tool-icon">🖐️</span></button>
+        <button class="tool-btn" id="tool-zoom" title="Zoom" data-tool="zoom"><span class="tool-icon">🔍</span></button>
+        <button class="tool-btn" id="tool-spawn" title="Spawn Human" data-tool="spawn"><span class="tool-icon">🧑</span></button>
+        <button class="tool-btn" id="tool-chunk" title="Generate Chunk" data-tool="chunk"><span class="tool-icon">🗺️</span></button>
+      </div>
+      <div class="tool-group">
+        <button class="tool-btn" id="tool-start" title="Start Time"><span class="tool-icon">▶️</span></button>
+        <button class="tool-btn" id="tool-pause" title="Pause Time"><span class="tool-icon">⏸️</span></button>
+      </div>
+    </div>
+  </div>
+  <script src="worldgen.js"></script>
+  <script src="world.js"></script>
+  <script src="entities.js"></script>
+  <script src="panel.js"></script>
+  <script>
+    if (/Mobi|Android|iPhone|iPad|iPod|Mobile|Touch/.test(navigator.userAgent)) {
+      document.body.innerHTML = '<div style="color:#fff;text-align:center;margin-top:100px;font-size:2rem;">Mobile devices are not supported.</div>';
+      throw new Error('Mobile not supported');
+    }
+    let currentTool = 'pan';
+    let timeRunning = true;
+    let intervalId = null;
+    const toolBtns = document.querySelectorAll('.tool-btn');
+    toolBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        toolBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        if (this.dataset.tool) currentTool = this.dataset.tool;
+      });
+    });
+    document.getElementById('tool-pan').classList.add('active');
+    document.getElementById('tool-start').onclick = function() {
+      if (!timeRunning) {
+        timeRunning = true;
+        startTime();
+      }
+    };
+    document.getElementById('tool-pause').onclick = function() {
+      if (timeRunning) {
+        timeRunning = false;
+        clearInterval(intervalId);
+      }
+    };
+    function startTime() {
+      intervalId = setInterval(() => {
+        moveEntities();
+        drawWorld();
+        drawEntities();
+      }, 1000);
+    }
+    let isPanning = false, panStart = null;
+    let isZooming = false, zoomStartY = null, zoomStartValue = null;
+    const canvas = document.getElementById('world');
+    canvas.addEventListener('mousedown', function(e) {
+      if (currentTool === 'pan') {
+        isPanning = true;
+        panStart = { x: e.clientX, y: e.clientY, camX: camera.x, camY: camera.y };
+      } else if (currentTool === 'zoom') {
+        isZooming = true;
+        zoomStartY = e.clientY;
+        zoomStartValue = VIEWPORT_SIZE;
+      }
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (isPanning && currentTool === 'pan') {
+        const dx = Math.round((panStart.x - e.clientX) / (canvas.width / VIEWPORT_SIZE));
+        const dy = Math.round((panStart.y - e.clientY) / (canvas.height / VIEWPORT_SIZE));
+        camera.x = Math.max(0, Math.min(WORLD_SIZE - VIEWPORT_SIZE, panStart.camX + dx));
+        camera.y = Math.max(0, Math.min(WORLD_SIZE - VIEWPORT_SIZE, panStart.camY + dy));
+        drawWorld();
+        drawEntities();
+      } else if (isZooming && currentTool === 'zoom') {
+        const dy = e.clientY - zoomStartY;
+        let newZoom = Math.max(8, Math.min(40, Math.round(zoomStartValue + dy / 10)));
+        window.setViewportSize(newZoom, true);
+      }
+    });
+    window.addEventListener('mouseup', function() {
+      isPanning = false;
+      isZooming = false;
+    });
+    canvas.addEventListener('click', function(e) {
+      if (currentTool === 'spawn') {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        const vx = Math.floor(mx / (canvas.width / VIEWPORT_SIZE));
+        const vy = Math.floor(my / (canvas.height / VIEWPORT_SIZE));
+        const wx = camera.x + vx;
+        const wy = camera.y + vy;
+        if (blockTypes[world[wy][wx]].walkable && !entities.some(ent => ent.x === wx && ent.y === wy)) {
+          window.spawnEntityAt(wx, wy);
+        }
+      } else if (currentTool === 'chunk') {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        const vx = Math.floor(mx / (canvas.width / VIEWPORT_SIZE));
+        const vy = Math.floor(my / (canvas.height / VIEWPORT_SIZE));
+        const wx = camera.x + vx;
+        const wy = camera.y + vy;
+        window.generateChunkAt(wx, wy);
+        drawWorld();
+        drawEntities();
+      }
+    });
+    async function main() {
+      await setupWorld();
+      drawWorld();
+      drawEntities();
+      renderPanel();
+      startTime();
+    }
+    document.addEventListener('DOMContentLoaded', main);
+  </script>
+</body>
+</html>

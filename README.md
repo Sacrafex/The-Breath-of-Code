@@ -60,6 +60,8 @@ Help us build the world they live in:
 - Define "intervention events" (e.g., plagues, blessings, revelations)
 - Logging system that lets users read what entities are thinking (Mechanic needed for this)
 
+**Once a base simulation is developed, I will work on an electronJS app for it.**
+
 ---
 
 ## 🤝 How to Contribute

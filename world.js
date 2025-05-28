@@ -1,8 +1,9 @@
-// Logic for generating the world grid and rendering it
 const WORLD_SIZE = 256;
 let camera = { x: 0, y: 0 };
 let world = [];
 let VIEWPORT_SIZE = 20;
+const BORDER_MARGIN = 0;
+const OUTER_BORDER = 1;
 
 const blockTypes = {
   "Border": {
@@ -57,8 +58,7 @@ async function loadBlockTextures() {
 }
 
 function randomBlockType(x, y) {
-  // Simple noise-based terrain generation
-  const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+    const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
   const r = n - Math.floor(n);
   if (r < 0.15) return 'water';
   if (r < 0.3) return 'stone';
@@ -132,7 +132,6 @@ async function setupWorld() {
   drawWorld();
 }
 
-// Ensure drawEntities uses VIEWPORT_SIZE and camera for correct zoom and panning
 if (typeof drawEntities === 'function') {
   const oldDrawEntities = drawEntities;
   window.drawEntities = function() {
@@ -154,6 +153,8 @@ window.addEventListener('keydown', (e) => {
 window.setupWorld = setupWorld;
 window.moveCamera = moveCamera;
 window.setViewportSize = function(size, centerZoom) {
+  // Clamp viewport size to 8-40 (default/original logic)
+  size = Math.max(8, Math.min(40, size));
   if (centerZoom) {
     const oldSize = VIEWPORT_SIZE;
     const centerX = camera.x + Math.floor(oldSize/2);

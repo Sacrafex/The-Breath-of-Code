@@ -1,6 +1,3 @@
-// worldgen.js
-// Simple Perlin noise implementation for terrain generation
-// Adapted from https://github.com/josephg/noisejs (MIT License)
 
 class SimplexNoise {
   constructor(seed = 0) {

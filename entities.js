@@ -1,4 +1,3 @@
-// Logic for bots (humans) roaming the world
 const NUM_ENTITIES = 8;
 let entities = [];
 
@@ -12,7 +11,7 @@ function randomWalkableTile() {
     x = Math.floor(Math.random() * WORLD_SIZE);
     y = Math.floor(Math.random() * WORLD_SIZE);
     tries++;
-    if (tries > 1000) return { x: 0, y: 0 }; // fallback
+    if (tries > 1000) return { x: 0, y: 0 };
   } while (!world[y] || !blockTypes[world[y][x]] || !blockTypes[world[y][x]].walkable || entities.some(e => e.x === x && e.y === y));
   return { x, y };
 }
@@ -31,7 +30,7 @@ function createEntity(id) {
     foundation: '',
     goal: null,
     path: [],
-    wonder: Math.random() * 100 // curiosity/interest
+    wonder: Math.random() * 100
   };
 }
 
@@ -93,7 +92,6 @@ function moveEntities() {
   }
 }
 
-// Simple A* pathfinding
 function findPath(sx, sy, ex, ey) {
   const open = [{x: sx, y: sy, g: 0, h: Math.abs(ex-sx)+Math.abs(ey-sy), path: []}];
   const closed = new Set();
@@ -144,5 +142,4 @@ window.drawEntities = drawEntities;
 window.entities = entities;
 window.addEmotion = addEmotion;
 document.addEventListener('DOMContentLoaded', () => {
-  // spawnEntities();
 });

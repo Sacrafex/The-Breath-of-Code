@@ -8,7 +8,7 @@ They wander. They observe. They act and react to the logic you’ve written into
 
 > _If you built a universe… would its inhabitants believe in you?_
 
-This project merges artificial intelligence, moral systems, procedural generation, and philosophical design to explore the essence of divine influence — and the struggle of the created to understand the Creator.
+This project merges artificial intelligence, moral systems, procedural generation, and philosophical design to present a unique sandbox interaction idea.
 
 ---
 
@@ -22,7 +22,7 @@ This project merges artificial intelligence, moral systems, procedural generatio
 
 The Breath of Code simulates a universe with many semi-aware entities. Each one follows its own logic, makes decisions, explores, and occasionally... questions things.
 
-You’re not there physically. You act through changes in the code, rules, terrain, and systems — sometimes noticed, sometimes not. Whether you intervene or remain silent, the world continues.
+You’re not there physically. You act through changes in the rules, terrain, and systems. Whether you intervene or remain silent, the world continues in this digital enviornment.
 
 Key mechanics:
 

@@ -38,7 +38,7 @@ Key mechanics:
 Help us build the world they live in:
 
 **Texture Designers**
-- All **block textures** must be `64x64` pixels (`.png`, seamless).
+- All **block textures** must be `16x16` pixels (`.png`, seamless).
 - Transparent backgrounds where necessary.
 - Use naming format: `blockname_variant.png` (e.g., `crystal_dark.png`)
 
